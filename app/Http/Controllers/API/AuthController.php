@@ -16,7 +16,7 @@ class AuthController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/register",
+     *     path="/register",
      *     summary="Register a new user",
      *     tags={"Authentication"},
      *     @OA\RequestBody(
@@ -76,7 +76,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/login",
+     *     path="/login",
      *     summary="Login a user",
      *     tags={"Authentication"},
      *     @OA\RequestBody(
@@ -135,7 +135,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="api/logout",
+     *     path="/logout",
      *     summary="Logout a user",
      *     tags={"Authentication"},
      *     security={{"sanctum":{}}},
@@ -177,7 +177,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Put(
-     *     path="api/user",
+     *     path="/user",
      *     summary="Update user information",
      *     tags={"User"},
      *     security={{"sanctum":{}}},
@@ -269,7 +269,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/reset-password",
+     *     path="/reset-password",
      *     summary="Reset password",
      *     tags={"Authentication"},
      *     @OA\RequestBody(
@@ -322,7 +322,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/profile",
+     *     path="/profile",
      *     summary="Update user profile",
      *     tags={"User"},
      *     security={{"sanctum":{}}},

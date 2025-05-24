@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *     @OA\Property(property="stock", type="integer", example=50),
  *     @OA\Property(property="category_id", type="integer", example=1),
  *     @OA\Property(property="image", type="string", example="products/smartphone.jpg"),
+ *     @OA\Property(property="featured", type="boolean", example=false),
+ *     @OA\Property(property="coming_soon", type="boolean", example=false),
  *     @OA\Property(property="created_at", type="string", format="date-time"),
  *     @OA\Property(property="updated_at", type="string", format="date-time")
  * )
@@ -49,6 +51,8 @@ class Product extends Model
         'stock',
         'category_id',
         'image',
+        'featured',
+        'coming_soon',
     ];
 
     /**

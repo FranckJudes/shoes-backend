@@ -14,7 +14,7 @@ class PaymentController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/payments/process",
+     *     path="/payments/process",
      *     summary="Process payment for an order",
      *     tags={"Payments"},
      *     security={{"sanctum":{}}},
@@ -182,7 +182,7 @@ class PaymentController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/payments/history",
+     *     path="/payments/history",
      *     summary="Get payment history",
      *     tags={"Payments"},
      *     security={{"sanctum":{}}},
@@ -217,7 +217,7 @@ class PaymentController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/payments/user/{user_id}",
+     *     path="/payments/user/{user_id}",
      *     summary="Get payment history for a specific user",
      *     tags={"Payments"},
      *     security={{"sanctum":{}}},

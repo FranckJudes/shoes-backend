@@ -10,7 +10,42 @@ class ProductController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/products",
+     *     path="/products/featured",
+     *     summary="Get list of featured and upcoming products",
+     *     tags={"Products"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of featured and upcoming products",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Product")),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error"
+     *     )
+     * )
+     */
+    public function featured()
+    {
+        try {
+            $products = Product::where('featured', true)
+                ->orWhere('coming_soon', true)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json(['data' => $products]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to retrieve featured products',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    /**
+     * @OA\Get(
+     *     path="/products",
      *     summary="Get list of products",
      *     tags={"Products"},
      *     @OA\Response(
@@ -79,7 +114,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/products/{id}",
+     *     path="/products/{id}",
      *     summary="Get product details",
      *     tags={"Products"},
      *     @OA\Parameter(
@@ -107,7 +142,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/products",
+     *     path="/products",
      *     summary="Create a new product",
      *     tags={"Products"},
      *     security={{"sanctum":{}}},
@@ -163,7 +198,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/products/{id}",
+     *     path="/products/{id}",
      *     summary="Update a product",
      *     tags={"Products"},
      *     security={{"sanctum":{}}},
@@ -220,7 +255,7 @@ class ProductController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/products/{id}",
+     *     path="/products/{id}",
      *     summary="Delete a product",
      *     tags={"Products"},
      *     security={{"sanctum":{}}},

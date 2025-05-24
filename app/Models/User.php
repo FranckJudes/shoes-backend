@@ -102,4 +102,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     * Get the saved items for the user.
+     */
+    public function savedItems(): HasMany
+    {
+        return $this->hasMany(SavedItem::class);
+    }
 }

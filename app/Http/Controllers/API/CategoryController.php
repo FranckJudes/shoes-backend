@@ -10,7 +10,7 @@ class CategoryController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/categories",
+     *     path="/categories",
      *     summary="Get list of categories",
      *     tags={"Categories"},
      *     @OA\Response(
@@ -30,7 +30,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/categories/{id}",
+     *     path="/categories/{id}",
      *     summary="Get category details",
      *     tags={"Categories"},
      *     @OA\Parameter(
@@ -58,7 +58,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/categories/{id}/products",
+     *     path="/categories/{id}/products",
      *     summary="Get products in a category",
      *     tags={"Categories"},
      *     @OA\Parameter(
@@ -149,7 +149,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/categories",
+     *     path="/categories",
      *     summary="Create a new category",
      *     tags={"Categories"},
      *     security={{"sanctum":{}}},
@@ -186,7 +186,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/categories/{id}",
+     *     path="/categories/{id}",
      *     summary="Update a category",
      *     tags={"Categories"},
      *     security={{"sanctum":{}}},
@@ -237,7 +237,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/categories/{id}",
+     *     path="/categories/{id}",
      *     summary="Delete a category",
      *     tags={"Categories"},
      *     security={{"sanctum":{}}},

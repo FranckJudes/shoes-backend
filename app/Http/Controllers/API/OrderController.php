@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/orders",
+     *     path="/orders",
      *     summary="Get user orders",
      *     tags={"Orders"},
      *     security={{"sanctum":{}}},
@@ -56,7 +56,7 @@ class OrderController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/orders",
+     *     path="/orders",
      *     summary="Create a new order",
      *     tags={"Orders"},
      *     security={{"sanctum":{}}},
@@ -156,7 +156,7 @@ class OrderController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/orders/{id}",
+     *     path="/orders/{id}",
      *     summary="Get order details",
      *     tags={"Orders"},
      *     security={{"sanctum":{}}},
@@ -201,7 +201,7 @@ class OrderController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/orders/{id}",
+     *     path="/orders/{id}",
      *     summary="Cancel an order",
      *     tags={"Orders"},
      *     security={{"sanctum":{}}},
