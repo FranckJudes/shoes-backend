@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\AddressController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +34,12 @@ Route::get('categories', [CategoryController::class, 'index']);
 Route::get('categories/{category}', [CategoryController::class, 'show']);
 Route::get('categories/{category}/products', [CategoryController::class, 'products']);
 
+// Routes pour les marques (brands)
+Route::get('brands', [BrandController::class, 'index']);
+Route::get('brands/featured', [BrandController::class, 'featured']);
+Route::get('brands/{brand}', [BrandController::class, 'show']);
+Route::get('brands/{brand}/products', [BrandController::class, 'products']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
@@ -48,9 +56,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('SavedItems', [UserController::class, 'savedItems']);
     Route::post('SavedItems', [UserController::class, 'saveItem']);
     Route::delete('SavedItems/{product_id}', [UserController::class, 'removeSavedItem']);
+    
+    // Routes pour les méthodes de paiement
     Route::get('PaymentMethods', [UserController::class, 'paymentMethods']);
-    Route::get('AdressBook', [UserController::class, 'addressBook']);
-    Route::put('AdressBook', [UserController::class, 'updateAddressBook']);
+    Route::post('PaymentMethods', [UserController::class, 'addPaymentMethod']);
+    Route::delete('PaymentMethods/{id}', [UserController::class, 'removePaymentMethod']);
+    Route::put('PaymentMethods/{id}/default', [UserController::class, 'setDefaultPaymentMethod']);
+    
+    // Routes pour le carnet d'adresses
+    Route::get('AdressBook', [AddressController::class, 'getAddressBook']);
+    Route::post('AdressBook', [AddressController::class, 'addAddressBook']);
+    Route::put('AdressBook', [AddressController::class, 'updateAddressBook']);
+    Route::delete('AdressBook/{id}', [AddressController::class, 'removeAddressBook']);
+    Route::put('AdressBook/{id}/default', [AddressController::class, 'setDefaultAddressBook']);
 
     Route::post('payments', [PaymentController::class, 'store']);
     Route::get('payments/{payment}', [PaymentController::class, 'show']);
@@ -64,6 +82,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('categories', [CategoryController::class, 'store']);
         Route::put('categories/{category}', [CategoryController::class, 'update']);
         Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
+
+        // Routes admin pour les marques (brands)
+        Route::post('brands', [BrandController::class, 'store']);
+        Route::put('brands/{brand}', [BrandController::class, 'update']);
+        Route::delete('brands/{brand}', [BrandController::class, 'destroy']);
 
         Route::get('admin/orders', [OrderController::class, 'adminIndex']);
         Route::put('admin/orders/{order}', [OrderController::class, 'adminUpdate']);

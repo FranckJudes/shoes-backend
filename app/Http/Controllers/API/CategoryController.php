@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -177,9 +178,20 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:categories',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $category = Category::create($request->all());
+        $data = $request->except('image');
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $path = $image->storeAs('categories', $imageName, 'public');
+            $data['image'] = Storage::url($path);
+        }
+
+        $category = Category::create($data);
 
         return response()->json($category, 201);
     }
@@ -228,9 +240,28 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'sometimes|string|max:255|unique:categories,name,' . $category->id,
             'description' => 'sometimes|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $category->update($request->all());
+        $data = $request->except('image');
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($category->image && !str_contains($category->image, 'placeholder')) {
+                $oldPath = str_replace(Storage::url(''), '', $category->image);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $path = $image->storeAs('categories', $imageName, 'public');
+            $data['image'] = Storage::url($path);
+        }
+
+        $category->update($data);
 
         return response()->json($category);
     }

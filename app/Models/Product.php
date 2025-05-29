@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *     @OA\Property(property="price", type="number", format="float", example=999.99),
  *     @OA\Property(property="stock", type="integer", example=50),
  *     @OA\Property(property="category_id", type="integer", example=1),
+ *     @OA\Property(property="brand_id", type="integer", example=1),
  *     @OA\Property(property="image", type="string", example="products/smartphone.jpg"),
  *     @OA\Property(property="featured", type="boolean", example=false),
  *     @OA\Property(property="coming_soon", type="boolean", example=false),
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *     @OA\Property(property="price", type="number", format="float", example=999.99),
  *     @OA\Property(property="stock", type="integer", example=50),
  *     @OA\Property(property="category_id", type="integer", example=1),
+ *     @OA\Property(property="brand_id", type="integer", example=1),
  *     @OA\Property(property="image", type="string", format="binary")
  * )
  */
@@ -50,6 +52,7 @@ class Product extends Model
         'price',
         'stock',
         'category_id',
+        'brand_id',
         'image',
         'featured',
         'coming_soon',
@@ -61,6 +64,14 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the brand that owns the product.
+     */
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -178,9 +179,20 @@ class ProductController extends Controller
                 'price' => 'required|numeric|min:0',
                 'stock' => 'required|integer|min:0',
                 'category_id' => 'required|exists:categories,id',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            $product = Product::create($request->all());
+            $data = $request->except('image');
+            
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $path = $image->storeAs('products', $imageName, 'public');
+                $data['image'] = Storage::url($path);
+            }
+
+            $product = Product::create($data);
 
             return response()->json($product, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -246,9 +258,28 @@ class ProductController extends Controller
             'price' => 'sometimes|numeric|min:0',
             'stock' => 'sometimes|integer|min:0',
             'category_id' => 'sometimes|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $product->update($request->all());
+        $data = $request->except('image');
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($product->image && !str_contains($product->image, 'placeholder')) {
+                $oldPath = str_replace(Storage::url(''), '', $product->image);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $path = $image->storeAs('products', $imageName, 'public');
+            $data['image'] = Storage::url($path);
+        }
+
+        $product->update($data);
 
         return response()->json($product);
     }

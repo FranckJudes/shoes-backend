@@ -384,6 +384,488 @@
                 ]
             }
         },
+        "/api/brands": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Récupérer toutes les marques",
+                "description": "Display a listing of the brands.",
+                "operationId": "fc4762c01629430942030dcf220ba534",
+                "responses": {
+                    "200": {
+                        "description": "Liste des marques récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Brand"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Créer une nouvelle marque",
+                "description": "Store a newly created brand in storage.",
+                "operationId": "65634a997dfda2178e634ee882c130f3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nike"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Nike, Inc. est une entreprise américaine"
+                                    },
+                                    "logo": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "is_featured": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "inactive"
+                                        ],
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Marque créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Brand created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Brand"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/api/brands/featured": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Récupérer les marques mises en avant",
+                "description": "Display featured brands.",
+                "operationId": "978cc54801dd3acb5bb72d1655501549",
+                "responses": {
+                    "200": {
+                        "description": "Liste des marques mises en avant récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Brand"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/brands/{brand}": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Récupérer les détails d'une marque",
+                "description": "Display the specified brand.",
+                "operationId": "c17f737d7cfbfd55f49ca88f1c47054f",
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "ID de la marque",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de la marque récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Brand"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marque non trouvée"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Mettre à jour une marque",
+                "description": "Update the specified brand in storage.",
+                "operationId": "fcd42042b9d4fa8127b6cba191b82fc8",
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "ID de la marque",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nike"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Nike, Inc. est une entreprise américaine"
+                                    },
+                                    "logo": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "is_featured": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "inactive"
+                                        ],
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Marque mise à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Brand updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Brand"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Données invalides",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marque non trouvée"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Supprimer une marque",
+                "description": "Remove the specified brand from storage.",
+                "operationId": "e544abfe26df06f0819bf7c541ac00cd",
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "ID de la marque",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marque supprimée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Brand deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Impossible de supprimer la marque",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cannot delete brand with associated products. Please remove or reassign the products first."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marque non trouvée"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/api/brands/{brand}/products": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Récupérer les produits d'une marque",
+                "description": "Get products for a specific brand.",
+                "operationId": "5caff80641c63ce68324ada149addc44",
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "ID de la marque",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Produits de la marque récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Product"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8000/api/brands/1/products?page=1"
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8000/api/brands/1/products?page=1"
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "path": {
+                                                    "type": "string",
+                                                    "example": "http://localhost:8000/api/brands/1/products"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marque non trouvée"
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "tags": [
@@ -1568,6 +2050,74 @@
                         "sanctum": []
                     }
                 ]
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Add a new payment method",
+                "operationId": "1886e1140a86bc93ba4a66fd1b07f7b2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "card_name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "card_number": {
+                                        "type": "string",
+                                        "example": "4242424242424242"
+                                    },
+                                    "expiry": {
+                                        "type": "string",
+                                        "example": "12/25"
+                                    },
+                                    "cvv": {
+                                        "type": "string",
+                                        "example": "123"
+                                    },
+                                    "is_default": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Payment method added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Payment method added successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/AdressBook": {
@@ -1679,11 +2229,329 @@
                         "sanctum": []
                     }
                 ]
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Add a new address to user's address book",
+                "operationId": "489f29d0f264aef516af28ce253fcd47",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "address_line1": {
+                                        "type": "string",
+                                        "example": "123 Main St"
+                                    },
+                                    "address_line2": {
+                                        "type": "string",
+                                        "example": "Apt 4B"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "City"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "example": "State"
+                                    },
+                                    "postal_code": {
+                                        "type": "string",
+                                        "example": "12345"
+                                    },
+                                    "country": {
+                                        "type": "string",
+                                        "example": "Country"
+                                    },
+                                    "is_default": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Address added successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/AdressBook/{id}": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Remove an address from user's address book",
+                "operationId": "63434614ab067bb4c2579772b93236cb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Address ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address removed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Address removed successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Address not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/AdressBook/{id}/default": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Set an address as default",
+                "operationId": "10070a40ca81368b14d6d6c1e8444471",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Address ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address set as default successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Address set as default successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Address not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/PaymentMethods/{id}": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Remove a payment method",
+                "operationId": "5dc5da1f19210fc882019991bd20c16a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment method removed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Payment method removed successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Payment method not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/PaymentMethods/{id}/default": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Set a payment method as default",
+                "operationId": "f27152e6f99e97540be57bf10ce15739",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment Method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment method set as default successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Payment method set as default successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Payment method not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         }
     },
     "components": {
         "schemas": {
+            "Brand": {
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Nike"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "nike"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Nike, Inc. is an American multinational corporation"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "example": "brands/nike-logo.jpg"
+                    },
+                    "is_featured": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Category": {
                 "required": [
                     "id",
@@ -2001,6 +2869,10 @@
                         "type": "integer",
                         "example": 1
                     },
+                    "brand_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
                     "image": {
                         "type": "string",
                         "example": "products/smartphone.jpg"
@@ -2051,6 +2923,10 @@
                         "example": 50
                     },
                     "category_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "brand_id": {
                         "type": "integer",
                         "example": 1
                     },
@@ -2211,6 +3087,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Brands",
+            "description": "API Endpoints pour la gestion des marques"
+        },
         {
             "name": "Authentication",
             "description": "Authentication"

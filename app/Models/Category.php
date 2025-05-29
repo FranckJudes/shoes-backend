@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="name", type="string", example="Electronics"),
  *     @OA\Property(property="description", type="string", example="Electronic devices and gadgets"),
+ *     @OA\Property(property="image", type="string", example="/storage/categories/category.jpg"),
  *     @OA\Property(property="created_at", type="string", format="date-time"),
  *     @OA\Property(property="updated_at", type="string", format="date-time")
  * )
@@ -21,7 +22,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *     schema="CategoryRequest",
  *     required={"name", "description"},
  *     @OA\Property(property="name", type="string", example="Electronics"),
- *     @OA\Property(property="description", type="string", example="Electronic devices and gadgets")
+ *     @OA\Property(property="description", type="string", example="Electronic devices and gadgets"),
+ *     @OA\Property(property="image", type="string", format="binary")
  * )
  */
 class Category extends Model
@@ -36,6 +38,7 @@ class Category extends Model
     protected $fillable = [
         'name',
         'description',
+        'image',
     ];
 
     /**

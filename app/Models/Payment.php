@@ -38,11 +38,23 @@ class Payment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'order_id',
         'payment_method',
+        'payment_details',
         'amount',
         'transaction_id',
         'status',
+        'is_default',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_default' => 'boolean',
     ];
 
     /**
@@ -51,5 +63,13 @@ class Payment extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+    
+    /**
+     * Get the user that owns the payment method.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
