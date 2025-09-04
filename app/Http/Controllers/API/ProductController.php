@@ -81,37 +81,34 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $query = Product::query();
-
-            // Filtrer par catégorie
-            if ($request->has('category_id')) {
-                $query->where('category_id', $request->category_id);
-            }
-
-            // Recherche par nom
-            if ($request->has('search')) {
-                $query->where('name', 'like', '%' . $request->search . '%')
-                      ->orWhere('description', 'like', '%' . $request->search . '%');
-            }
-
-            // Tri
-            $sortField = $request->input('sort_by', 'created_at');
-            $sortDirection = $request->input('sort_direction', 'desc');
-            $query->orderBy($sortField, $sortDirection);
-
-            // Pagination
-            $perPage = $request->input('per_page', 15);
-            $products = $query->paginate($perPage);
-
-            return response()->json($products);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to retrieve products',
-                'error' => $e->getMessage(),
-            ], 500);
+        $query = Product::query();
+    
+        if ($request->has('is_new')) {
+            $query->where('featured', true);
         }
+    
+        if ($request->has('is_upcoming')) {
+            $query->where('coming_soon', true);
+        }
+    
+        // Recherche par nom
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+        }
+    
+        // Tri
+        $sortField = $request->input('sort_by', 'created_at');
+        $sortDirection = $request->input('sort_direction', 'desc');
+        $query->orderBy($sortField, $sortDirection);
+    
+        // Pagination
+        $perPage = $request->input('per_page', 15);
+        $products = $query->paginate($perPage);
+    
+        return response()->json($products);
     }
+    
 
     /**
      * @OA\Get(
@@ -170,43 +167,49 @@ class ProductController extends Controller
      *     )
      * )
      */
-    public function store(Request $request)
-    {
-        try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'required|string',
-                'price' => 'required|numeric|min:0',
-                'stock' => 'required|integer|min:0',
-                'category_id' => 'required|exists:categories,id',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-
-            $data = $request->except('image');
-            
-            // Handle image upload
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $path = $image->storeAs('products', $imageName, 'public');
-                $data['image'] = Storage::url($path);
-            }
-
-            $product = Product::create($data);
-
-            return response()->json($product, 201);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors(),
-            ], 422);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to create product',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
+    
+     public function store(Request $request)
+     {
+         try {
+             $request->validate([
+                 'name' => 'required|string|max:255',
+                 'description' => 'required|string',
+                 'price' => 'required|numeric|min:0',
+                 'stock' => 'required|integer|min:0',
+                 'category_id' => 'required|exists:categories,id',
+                 'brand_id' => 'nullable|exists:brands,id', // ajoute cette ligne
+                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+             ]);
+     
+             // Récupère tous les champs sauf l'image
+             $data = $request->only([
+                 'name', 'description', 'price', 'stock', 'category_id', 'brand_id'
+             ]);
+     
+             // Gestion de l'image
+             if ($request->hasFile('image')) {
+                 $image = $request->file('image');
+                 $imageName = time() . '_' . $image->getClientOriginalName();
+                 $path = $image->storeAs('products', $imageName, 'public');
+                 $data['image'] = asset(Storage::url($path));
+             }
+     
+             $product = Product::create($data);
+     
+             return response()->json($product, 201);
+         } catch (\Illuminate\Validation\ValidationException $e) {
+             return response()->json([
+                 'message' => 'Validation failed',
+                 'errors' => $e->errors(),
+             ], 422);
+         } catch (\Exception $e) {
+             return response()->json([
+                 'message' => 'Failed to create product',
+                 'error' => $e->getMessage(),
+             ], 500);
+         }
+     }
+     
 
     /**
      * @OA\Put(

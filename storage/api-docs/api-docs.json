@@ -384,7 +384,7 @@
                 ]
             }
         },
-        "/api/brands": {
+        "/brands": {
             "get": {
                 "tags": [
                     "Brands"
@@ -512,7 +512,7 @@
                 }
             }
         },
-        "/api/brands/featured": {
+        "/brands/featured": {
             "get": {
                 "tags": [
                     "Brands"
@@ -546,7 +546,7 @@
                 }
             }
         },
-        "/api/brands/{brand}": {
+        "/brands/{brand}": {
             "get": {
                 "tags": [
                     "Brands"
@@ -763,7 +763,7 @@
                 }
             }
         },
-        "/api/brands/{brand}/products": {
+        "/brands/{brand}/products": {
             "get": {
                 "tags": [
                     "Brands"

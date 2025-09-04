@@ -66,6 +66,8 @@ class ProductSeeder extends Seeder
                 'price' => 69.99,
                 'stock' => 35,
                 'category_id' => 3,
+                'coming_soon' => true,
+                'featured'=>true,
             ],
             
             // Books
@@ -75,6 +77,8 @@ class ProductSeeder extends Seeder
                 'price' => 19.99,
                 'stock' => 100,
                 'category_id' => 4,
+                'coming_soon' => true,
+                'featured'=>true,
             ],
             [
                 'name' => 'Cookbook Collection',
@@ -82,6 +86,17 @@ class ProductSeeder extends Seeder
                 'price' => 34.99,
                 'stock' => 60,
                 'category_id' => 4,
+                'coming_soon' => true,
+                'featured'=>true,
+            ],
+            [
+                'name' => 'dasdas Collection',
+                'description' => 'Collection of recipes from around the world',
+                'price' => 34.99,
+                'stock' => 60,
+                'category_id' => 5,
+                'coming_soon' => true,
+                'featured'=>true,
             ],
             
             // Sports & Outdoors
@@ -91,6 +106,8 @@ class ProductSeeder extends Seeder
                 'price' => 24.99,
                 'stock' => 80,
                 'category_id' => 5,
+                'featured'=>true,
+                'coming_soon' => true,
             ],
             [
                 'name' => 'Camping Tent',
@@ -98,6 +115,8 @@ class ProductSeeder extends Seeder
                 'price' => 129.99,
                 'stock' => 25,
                 'category_id' => 5,
+                'featured' => false,
+                'coming_soon' => true,
             ],
         ];
 
