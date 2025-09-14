@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CategorySeeder extends Seeder
 {
@@ -12,26 +13,30 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        DB::statement('PRAGMA foreign_keys = OFF;'); // Désactive les contraintes
+        Category::query()->delete();                   // Supprime toutes les données
+        DB::statement('PRAGMA foreign_keys = ON;');  // Réactive les contraintes
+
         $categories = [
             [
-                'name' => 'Electronics',
-                'description' => 'Electronic devices and gadgets',
+                'name' => 'Sneakers Homme',
+                'description' => 'Collection de sneakers pour homme, allant des classiques aux nouveautés.',
             ],
             [
-                'name' => 'Clothing',
-                'description' => 'Apparel and fashion items',
+                'name' => 'Sneakers Femme',
+                'description' => 'Sneakers tendance et élégantes spécialement conçues pour femme.',
             ],
             [
-                'name' => 'Home & Kitchen',
-                'description' => 'Home appliances and kitchen essentials',
+                'name' => 'Éditions Limitées',
+                'description' => 'Modèles rares, collaborations exclusives et sneakers collectors.',
             ],
             [
-                'name' => 'Books',
-                'description' => 'Books, e-books, and audiobooks',
+                'name' => 'Sneakers Enfant',
+                'description' => 'Sneakers confortables et stylées pour les plus jeunes.',
             ],
             [
-                'name' => 'Sports & Outdoors',
-                'description' => 'Sports equipment and outdoor gear',
+                'name' => 'Accessoires',
+                'description' => 'Chaussettes, lacets, produits d’entretien et autres accessoires.',
             ],
         ];
 
