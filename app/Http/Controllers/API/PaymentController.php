@@ -111,10 +111,12 @@ class PaymentController extends Controller
             event(new PaymentReceived($payment));
 
             return response()->json([
-                'message' => 'Payment processed successfully',
+                'success' => true,
+                'message' => 'Le paiement a été effectué avec succès', // ton message frontend
                 'payment' => $payment,
                 'order' => $order
             ]);
+            
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Validation failed',

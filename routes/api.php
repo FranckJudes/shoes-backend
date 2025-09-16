@@ -8,6 +8,7 @@ use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AddressController;
+use App\Http\Controllers\API\SavedItemController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('orders', [OrderController::class, 'index']);
     Route::post('orders', [OrderController::class, 'store']);
     Route::get('orders/{order}', [OrderController::class, 'show']);
+    Route::delete('orders/{id}', [OrderController::class, 'destroy']);
     
     // User profile related routes
     Route::get('OrderHistory', [UserController::class, 'orderHistory']);
@@ -70,10 +72,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('AdressBook/{id}', [AddressController::class, 'removeAddressBook']);
     Route::put('AdressBook/{id}/default', [AddressController::class, 'setDefaultAddressBook']);
 
-    Route::post('payments', [PaymentController::class, 'store']);
-    Route::get('payments/{payment}', [PaymentController::class, 'show']);
-    Route::get('payments/user/{user_id}', [PaymentController::class, 'getUserPaymentHistory']);
-
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('payments/process', [PaymentController::class, 'processPayment']);
+        Route::post('payments', [PaymentController::class, 'store']);
+        Route::get('payments/{payment}', [PaymentController::class, 'show']);
+        Route::get('payments/user/{user_id}', [PaymentController::class, 'getUserPaymentHistory']);
+    });
+    
+    
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/SavedItems', [SavedItemController::class, 'index']);
+        Route::post('/SavedItems', [SavedItemController::class, 'store']);
+        Route::delete('/SavedItems/{productId}', [SavedItemController::class, 'destroy']);
+    });
     Route::middleware('admin')->group(function () {
         Route::post('products', [ProductController::class, 'store']);
         Route::put('products/{product}', [ProductController::class, 'update']);
